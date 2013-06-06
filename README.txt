@@ -12,7 +12,7 @@ Cryptography is hard.
 Incorrectly applied cryptography is doubly evil, because in addition to
 being useless, it provides a false sense of security.
 
-While I have made an earnest effory at making this tool secure, I have
+While I have made an earnest effort at making this tool secure, I have
 not yet done a significant analysis of the cryptography techniques
 used, which makes the tool UNSAFE.
 ========================================================================
