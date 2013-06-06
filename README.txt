@@ -1,3 +1,8 @@
+Tool for storing and retrieving passwords.  Backs onto a git repository.
+
+Before use, make sure that the directory ~/.asswords is a valid git repository, and
+has a defined remote "origin".
+
 usage: asswords.py [-h] {list,add,get,delete,push} ...
 
 positional arguments:
