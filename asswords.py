@@ -1,35 +1,13 @@
 #!/usr/bin/env python2
 
-import curses
 import argparse
 import os
-from getpass import getpass
 from versionedStorage import VersionedStorage
+import ui
 
 home = os.path.expanduser("~")
 dbDir = os.path.join(home, ".asswords")
-db = None # set after arg parse
 
-def readPassphrase(query="Master passphrase: "):
-    return getpass(query)
-
-def displayPassword(screen, password):
-    title = "PRESS ENTER WHEN DONE"
-    width = max(len(title) + 4, len(password) + 2)
-    sh, sw = screen.getmaxyx()
-    x = int((sw - width) / 2)
-    y = int((sh - 1) / 2)
-    dialog = screen
-    x_offset = 0
-    if (width < sw):
-        x_goffset = 1
-        dialog = curses.newwin(3, width, y, x)
-        dialog.box()
-    dialog.addstr(0, x_offset + 1, title)
-    dialog.addstr(1, x_offset + 0, password)
-    curses.noecho()
-    dialog.getstr()
-    
 def cmdList(args):
     db = VersionedStorage(dbDir, "dummypass")
     names = db.getNames()
@@ -41,9 +19,9 @@ def cmdList(args):
         print " %d %s"%(x+1, names[x])
 
 def cmdAdd(args):
-    db = VersionedStorage(dbDir, readPassphrase())
+    db = VersionedStorage(dbDir, ui.readPassphrase())
     name = args.name
-    password = readPassphrase("Password for %s: "%name)
+    password = ui.readPassword(name)
     db.setPassword(name, password)
 
 def cmdDelete(args):
@@ -54,14 +32,11 @@ def cmdPush(args):
     db.push()
 
 def cmdGet(args):
-    db = VersionedStorage(dbDir, readPassphrase())
+    db = VersionedStorage(dbDir, ui.readPassphrase())
     idx = args.idx - 1
+    name = db.getNames()[idx]
     password = db.getPassword(idx)
-    screen = curses.initscr()
-    try:
-        displayPassword(screen, password)
-    finally:
-        curses.endwin()
+    ui.displayPassword(name, password)
 
 parser = argparse.ArgumentParser()
 subparsers = parser.add_subparsers(help="Commands:")
@@ -91,4 +66,5 @@ parser_push = subparsers.add_parser(
 parser_push.set_defaults(func=cmdPush)
 
 args = parser.parse_args()
+
 args.func(args)
