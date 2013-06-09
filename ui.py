@@ -38,7 +38,9 @@ def readPassword(name):
 
     # Basically Windows fallback
     if not hasCurses:
-        return getpass(query + " ")
+        pword = raw_input(query + " ")
+        clearScreen()
+        return pword
 
     screen = curses.initscr()
     try:
