@@ -62,4 +62,9 @@ class FileStorage:
         for entry in self.entries:
             w.write(entry + "\n")
         w.close()
-        os.rename(tmpName, self.dataFile)
+        try:
+            os.rename(tmpName, self.dataFile)
+        except WindowsError:
+            # atomic replace not as easy Windows
+            os.remove(self.dataFile)
+            os.rename(tmpName, self.dataFile)
