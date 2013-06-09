@@ -7,10 +7,10 @@ class InvalidPassword(Exception):
 class FileStorage:
     __SANITY_PHRASE = "-~=* EXCELLENT *=~-";
 
-    def __init__(self, dataFile, password):
+    def __init__(self, dataFile, masterPassword):
         self.dataFile = dataFile
-        self.entryEncoder = RowEncoder(password)
-        self.sanityEncoder = SSE(password)
+        self.entryEncoder = RowEncoder(masterPassword)
+        self.sanityEncoder = SSE(masterPassword)
 
         if not os.path.exists(self.dataFile):
             self.entries = []

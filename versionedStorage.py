@@ -5,13 +5,13 @@ from fileStorage import FileStorage
 DBFILE = "passwords"
 
 class VersionedStorage:
-    def __init__(self, dbDir, password):
+    def __init__(self, dbDir, masterPassword):
         self.dbDir = dbDir
         dbPath = os.path.join(dbDir, DBFILE)
         if not os.path.isdir(dbDir):
             raise Exception("Data folder not found: " + dbDir)
         self.pull()
-        self.fs = FileStorage(dbPath, password)
+        self.fs = FileStorage(dbPath, masterPassword)
 
     def getNames(self):
         return self.fs.getNames()
