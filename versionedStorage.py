@@ -28,8 +28,11 @@ class VersionedStorage:
         self.commit("Deleted entry %s"%name)
 
     def pull(self):
-        call([ "git", "pull", "-q", "--strategy=recursive", "--strategy-option=ours",
-               "origin", "master" ], cwd=self.dbDir)
+        call([ "git", "fetch", "-q", "origin", "master", cwd=self.dbDir)
+        call([ "git", "merge", "-q",
+               "--strategy=recursive",
+               "--strategy-option=ours",
+               "origin/master" ], cwd=self.dbDir)
 
     def push(self):
         self.commit("Pushing offline changes.")
