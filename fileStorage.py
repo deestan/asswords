@@ -48,8 +48,6 @@ class FileStorage:
         self.persist()
 
     def delete(self, idx):
-        if not self.sane:
-            raise InvalidPassword()
         entry = self.entries.pop(idx)
         self.persist()
         return self.entryEncoder.decodeName(entry)
