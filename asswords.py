@@ -26,9 +26,11 @@ def cmdAdd(args):
 
 def cmdDelete(args):
     idx = args.idx - 1
+    db = VersionedStorage(dbDir, "dummypass")
     db.deletePassword(idx)
 
 def cmdPush(args):
+    db = VersionedStorage(dbDir, "dummypass")
     db.push()
 
 def cmdGet(args):
