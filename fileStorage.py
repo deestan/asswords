@@ -26,6 +26,10 @@ class FileStorage:
     def getNames(self):
         return map(self.entryEncoder.decodeName, self.entries)
 
+    def verifyMasterPassword(self):
+        if not self.sane:
+            raise InvalidPassword()
+
     def getPassword(self, idx):
         if not self.sane:
             raise InvalidPassword()

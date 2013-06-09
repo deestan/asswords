@@ -20,6 +20,7 @@ def cmdList(args):
 
 def cmdAdd(args):
     db = VersionedStorage(dbDir, ui.readPassphrase())
+    db.verifyMasterPassword()
     name = args.name
     password = ui.readPassword(name)
     db.setPassword(name, password)

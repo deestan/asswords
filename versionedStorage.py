@@ -23,6 +23,9 @@ class VersionedStorage:
     def getPassword(self, idx):
         return self.fs.getPassword(idx)
 
+    def verifyMasterPassword(self):
+        self.fs.verifyMasterPassword()
+
     def delete(self, idx):
         name = self.fs.delete(idx)
         self.commit("Deleted entry %s"%name)
