@@ -14,13 +14,14 @@ class FileStorage:
 
         if not os.path.exists(self.dataFile):
             self.entries = []
+            self.sanityCertificate = None # new generated on persist
             self.sane = True
             return
         # read entries
         lines_unclean = open(self.dataFile, "rb").read().split("\n")
         lines = filter(bool, lines_unclean)
-        sanityCertificate, self.entries = lines[0], lines[1:]
-        check = self.sanityEncoder.decrypt(sanityCertificate)
+        self.sanityCertificate, self.entries = lines[0], lines[1:]
+        check = self.sanityEncoder.decrypt(self.sanityCertificate)
         self.sane = check == self.__SANITY_PHRASE
     
     def getNames(self):
@@ -58,9 +59,10 @@ class FileStorage:
 
     def persist(self):
         tmpName = self.dataFile + ".temp"
-        sanityCertificate = self.sanityEncoder.encrypt(self.__SANITY_PHRASE)
+        self.sanityCertificate = (self.sanityCertificate or
+                                  self.sanityEncoder.encrypt(self.__SANITY_PHRASE))
         w = open(tmpName, "wb")
-        w.write(sanityCertificate + "\n")
+        w.write(self.sanityCertificate + "\n")
         for entry in self.entries:
             w.write(entry + "\n")
         w.close()
